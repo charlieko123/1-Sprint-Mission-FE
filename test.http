@@ -1,0 +1,9 @@
+POST https://panda-market-api.vercel.app/auth/signUp
+Content-Type: application/json
+
+{
+  "email": "testtest@email.com",
+  "nickname": "nickname123",
+  "password": "password123",
+  "passwordConfirmation": "password123"
+}

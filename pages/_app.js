@@ -4,15 +4,16 @@ import "@styles/globals.css";
 import Footer from "../src/components/Footer";
 
 function MyApp({ Component, pageProps }) {
-  return (
-    <>
-      <Navigation />
-      <main style={{ paddingBottom: "16rem" }}>
-        <Component {...pageProps} />
-      </main>
-      <Footer />
-    </>
-  );
+  const getLayout =
+    Component.getLayout ||
+    ((page) => (
+      <>
+        <Navigation />
+        <main style={{ paddingBottom: "16rem" }}>{page}</main>
+        <Footer />
+      </>
+    ));
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;
