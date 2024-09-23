@@ -68,7 +68,6 @@ const Login = () => {
           />
           {emailError && <p className={styles.error}>{emailError}</p>}
         </div>
-
         <div>
           <label>비밀번호</label>
           <input
@@ -80,7 +79,6 @@ const Login = () => {
           />
           {passwordError && <p className={styles.error}>{passwordError}</p>}
         </div>
-
         <button
           type="submit"
           disabled={!email || !password}
