@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function RegisterPage() {
+export default function Register() {
   const router = useRouter();
 
   const [values, setValues] = useState({
@@ -60,6 +60,6 @@ export default function RegisterPage() {
   );
 }
 
-RegisterPage.getLayout = function getLayout(page) {
+Register.getLayout = function getLayout(page) {
   return page;
 };

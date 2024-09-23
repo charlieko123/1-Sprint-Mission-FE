@@ -98,4 +98,8 @@ const Login = () => {
   );
 };
 
+Login.getLayout = function getLayout(page) {
+  return page;
+};
+
 export default Login;
