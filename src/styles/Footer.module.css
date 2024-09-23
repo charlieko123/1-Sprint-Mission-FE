@@ -56,6 +56,6 @@
     order: 2;
     flex-basis: 50%;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
 }

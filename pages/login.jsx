@@ -14,7 +14,7 @@ const Login = () => {
 
   const mutation = useMutation(
     async (loginData) => {
-      const res = await axios.post(
+      const response = await axios.post(
         "https://panda-market-api.vercel.app/api/signIn",
         loginData,
         { withCredentials: true }
