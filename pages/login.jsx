@@ -1,11 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import styles from "@styles/Login.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import SimpleLogin from "@components/SimpleLogin";
+import { AuthContext } from "@contexts/AuthProvider";
 
 import pandaLogo from "@images/pandaLogo.png";
 import eyeBtn from "@images/btn_eye.svg";
@@ -18,6 +19,7 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
+  const { login } = useContext(AuthContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -35,7 +37,7 @@ const Login = () => {
     },
     {
       onSuccess: (data) => {
-        localStorage.setItem("token", data.token);
+        login(data);
         router.push("/items");
       },
       onError: (error) => {

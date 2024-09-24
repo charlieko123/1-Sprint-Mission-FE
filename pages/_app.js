@@ -3,6 +3,7 @@ import Navigation from "../src/components/Navigation";
 import "@styles/globals.css";
 import Footer from "../src/components/Footer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@contexts/AuthProvider";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient();
@@ -18,7 +19,7 @@ function MyApp({ Component, pageProps }) {
     ));
   return (
     <QueryClientProvider client={queryClient}>
-      {getLayout(<Component {...pageProps} />)}
+      <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
     </QueryClientProvider>
   );
 }
