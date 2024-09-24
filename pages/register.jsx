@@ -1,11 +1,12 @@
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "@styles/Register.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import SimpleLogin from "@/src/components/SimpleLogin";
+import { AuthContext } from "@contexts/AuthProvider";
 
 import pandaLogo from "@images/pandaLogo.png";
 import eyeBtn from "@images/btn_eye.svg";
@@ -13,6 +14,7 @@ import eyeSlashBtn from "@images/btn_eye_slash.svg";
 
 export default function Register() {
   const router = useRouter();
+  const { login } = useContext(AuthContext);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,7 +42,7 @@ export default function Register() {
     },
     {
       onSuccess: (data) => {
-        localStorage.setItem("token", data.accessToken);
+        login(data);
         router.push("/items");
       },
       onError: (error) => {
