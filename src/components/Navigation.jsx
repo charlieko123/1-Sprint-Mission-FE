@@ -52,7 +52,9 @@ function Navigation() {
         {user ? (
           <div className={styles.profile}>
             <Image className={styles.icon} src={icon} alt="User Icon" />
-            <span className="text-md bold">{user.nickname}</span>
+            <span className={`${styles.nickname} text-2lg regular`}>
+              {user.nickname}
+            </span>
             <button onClick={handleLogout} className={styles.logoutButton}>
               로그아웃
             </button>
