@@ -5,9 +5,11 @@ import axios from "axios";
 import styles from "@styles/Register.module.css";
 import Link from "next/link";
 import Image from "next/image";
+import SimpleLogin from "@/src/components/SimpleLogin";
 
 import pandaLogo from "@images/pandaLogo.png";
-import SimpleLogin from "@/src/components/SimpleLogin";
+import eyeBtn from "@images/btn_eye.svg";
+import eyeSlashBtn from "@images/btn_eye_slash.svg";
 
 export default function Register() {
   const router = useRouter();
@@ -20,6 +22,8 @@ export default function Register() {
   });
 
   const [passwordError, setPasswordError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordRepeatVisible, setPasswordRepeatVisible] = useState(false);
 
   const mutation = useMutation(
     async (formData) => {
@@ -66,6 +70,15 @@ export default function Register() {
     });
   }
 
+  const togglePasswordVisible = () => {
+    setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
+  };
+  const togglePasswordRepeatVisible = () => {
+    setPasswordRepeatVisible(
+      (prevPasswordRepeatVisible) => !prevPasswordRepeatVisible
+    );
+  };
+
   return (
     <div className={styles.registerContainer}>
       <div className={styles.logoContainer}>
@@ -96,27 +109,50 @@ export default function Register() {
         </div>
         <div className={styles.inputContainer}>
           <label className={`${styles.label} text-2lg bold`}>비밀번호</label>
-          <input
-            type="password"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-            placeholder="비밀번호를 입력해주세요"
-            className={styles.input}
-          />
+          <div className={styles.passwordWrapper}>
+            <input
+              type={passwordVisible ? "text" : "password"}
+              name="password"
+              value={values.password}
+              onChange={handleChange}
+              placeholder="비밀번호를 입력해주세요"
+              className={styles.input}
+            />
+            <div onClick={togglePasswordVisible} className={styles.eyeButton}>
+              <Image
+                src={passwordVisible ? eyeBtn : eyeSlashBtn}
+                alt="eye toggle button"
+                width={24}
+                height={24}
+              />
+            </div>
+          </div>
         </div>
         <div className={styles.inputContainer}>
           <label className={`${styles.label} text-2lg bold`}>
             비밀번호 확인
           </label>
-          <input
-            type="password"
-            name="passwordRepeat"
-            value={values.passwordRepeat}
-            onChange={handleChange}
-            placeholder="비밀번호를 다시 한 번 입력해주세요"
-            className={styles.input}
-          />
+          <div className={styles.passwordWrapper}>
+            <input
+              type={passwordRepeatVisible ? "text" : "password"}
+              name="passwordRepeat"
+              value={values.passwordRepeat}
+              onChange={handleChange}
+              placeholder="비밀번호를 다시 한 번 입력해주세요"
+              className={styles.input}
+            />
+            <div
+              onClick={togglePasswordRepeatVisible}
+              className={styles.eyeButton}
+            >
+              <Image
+                src={passwordRepeatVisible ? eyeBtn : eyeSlashBtn}
+                alt="eye toggle button"
+                width={24}
+                height={24}
+              />
+            </div>
+          </div>
         </div>
         {passwordError && <p className={styles.error}>{passwordError}</p>}
         <button

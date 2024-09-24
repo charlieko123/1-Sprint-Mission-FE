@@ -8,12 +8,15 @@ import Image from "next/image";
 import SimpleLogin from "@components/SimpleLogin";
 
 import pandaLogo from "@images/pandaLogo.png";
+import eyeBtn from "@images/btn_eye.svg";
+import eyeSlashBtn from "@images/btn_eye_slash.svg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
 
   const mutation = useMutation(
@@ -58,6 +61,10 @@ const Login = () => {
     }
   };
 
+  const togglePasswordVisible = () => {
+    setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
+  };
+
   return (
     <div className={styles.loginContainer}>
       <div className={styles.logoContainer}>
@@ -77,13 +84,23 @@ const Login = () => {
         </div>
         <div className={styles.inputContainer}>
           <label className={`${styles.label} text-2lg bold`}>비밀번호</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="비밀번호를 입력해주세요"
-            className={styles.input}
-          />
+          <div className={styles.passwordWrapper}>
+            <input
+              type={passwordVisible ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="비밀번호를 입력해주세요"
+              className={styles.input}
+            />
+            <div onClick={togglePasswordVisible} className={styles.eyeButton}>
+              <Image
+                src={passwordVisible ? eyeBtn : eyeSlashBtn}
+                alt="eye toggle button"
+                width={24}
+                height={24}
+              />
+            </div>
+          </div>
           {passwordError && <p className={styles.error}>{passwordError}</p>}
         </div>
         <button

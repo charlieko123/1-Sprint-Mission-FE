@@ -17,6 +17,9 @@
   display: flex;
   flex-direction: column;
 }
+.passwordWrapper {
+  position: relative;
+}
 .input {
   margin-top: 1.6rem;
   margin-bottom: 2.4rem;
@@ -32,6 +35,11 @@
     line-height: 2.6rem;
     font-weight: 400;
   }
+}
+.eyeButton {
+  position: absolute;
+  top: 3.2rem;
+  right: 2.4rem;
 }
 .button {
   width: 64rem;
