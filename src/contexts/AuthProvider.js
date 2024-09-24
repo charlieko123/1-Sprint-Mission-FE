@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({
   user: null,
@@ -26,6 +27,24 @@ export function AuthProvider({ children }) {
       ...updatedUserData,
     }));
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get("https://panda-market-api.vercel.app/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          console.log(response.data);
+          setUser(response.data);
+        })
+        .catch(() => {
+          console.error("Error fetching user data:", error);
+          logout();
+        });
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout, updateMe }}>

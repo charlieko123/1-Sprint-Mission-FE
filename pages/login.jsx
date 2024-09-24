@@ -36,7 +36,10 @@ const Login = () => {
     },
     {
       onSuccess: (data) => {
-        login(data);
+        login({
+          accessToken: data.accessToken,
+          nickname: data.nickname,
+        });
         router.push("/items");
       },
       onError: (error) => {
