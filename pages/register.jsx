@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import pandaLogo from "@images/pandaLogo.png";
+import SimpleLogin from "@/src/components/SimpleLogin";
 
 export default function Register() {
   const router = useRouter();
@@ -71,40 +72,50 @@ export default function Register() {
         <Image src={pandaLogo} alt="panda logo" fill />
       </div>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <div>
-          <label>이메일</label>
+        <div className={styles.inputContainer}>
+          <label className={`${styles.label} text-2lg bold`}>이메일</label>
           <input
             type="email"
             name="email"
             value={values.email}
             onChange={handleChange}
+            placeholder="이메일을 입력해주세요"
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>닉네임</label>
+        <div className={styles.inputContainer}>
+          <label className={`${styles.label} text-2lg bold`}>닉네임</label>
           <input
             type="text"
             name="nickname"
             value={values.nickname}
             onChange={handleChange}
+            placeholder="닉네임을 입력해주세요"
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>비밀번호</label>
+        <div className={styles.inputContainer}>
+          <label className={`${styles.label} text-2lg bold`}>비밀번호</label>
           <input
             type="password"
             name="password"
             value={values.password}
             onChange={handleChange}
+            placeholder="비밀번호를 입력해주세요"
+            className={styles.input}
           />
         </div>
-        <div>
-          <label>비밀번호 확인</label>
+        <div className={styles.inputContainer}>
+          <label className={`${styles.label} text-2lg bold`}>
+            비밀번호 확인
+          </label>
           <input
             type="password"
             name="passwordRepeat"
             value={values.passwordRepeat}
             onChange={handleChange}
+            placeholder="비밀번호를 다시 한 번 입력해주세요"
+            className={styles.input}
           />
         </div>
         {passwordError && <p className={styles.error}>{passwordError}</p>}
@@ -116,14 +127,17 @@ export default function Register() {
             !values.password ||
             !values.passwordRepeat
           }
+          className={`${styles.button} text-xl semibold`}
         >
           회원가입
         </button>
       </form>
-      <div className={styles.socialLogin}>간편 로그인하기</div>
-      <div className={styles.alreadyMember}>
-        이미 회원이신가요? <Link href="/login">로그인</Link>
-      </div>
+      <SimpleLogin />
+      <br />
+      <br />
+      <p className="text-md medium">
+        이미 회원이신가요?&nbsp;<Link href="/login">로그인</Link>
+      </p>
     </div>
   );
 }
