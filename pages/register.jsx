@@ -71,6 +71,7 @@ export default function Register() {
       email: values.email,
       nickname: values.nickname,
       password: values.password,
+      passwordConfirmation: values.passwordRepeat,
     });
   }
 
