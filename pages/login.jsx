@@ -73,7 +73,9 @@ const Login = () => {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.logoContainer}>
-        <Image src={pandaLogo} alt="panda logo" fill />
+        <Link href="/">
+          <Image src={pandaLogo} alt="panda logo" fill />
+        </Link>
       </div>
       <form className={styles.form} onSubmit={handleLogin}>
         <div className={styles.inputContainer}>

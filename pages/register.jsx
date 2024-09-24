@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "@styles/Register.module.css";
@@ -87,7 +87,9 @@ export default function Register() {
   return (
     <div className={styles.registerContainer}>
       <div className={styles.logoContainer}>
-        <Image src={pandaLogo} alt="panda logo" fill />
+        <Link href="/">
+          <Image src={pandaLogo} alt="panda logo" fill />
+        </Link>
       </div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.inputContainer}>
