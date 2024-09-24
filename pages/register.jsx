@@ -40,7 +40,7 @@ export default function Register() {
     },
     {
       onSuccess: (data) => {
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.accessToken);
         router.push("/items");
       },
       onError: (error) => {
