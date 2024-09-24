@@ -1,4 +1,74 @@
 .loginContainer {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 23.1rem;
+}
+.logoContainer {
+  position: relative;
+  width: 39.6rem;
+  height: 13.2rem;
+}
+.form {
+  margin-top: 4rem;
+}
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+}
+.input {
+  margin-top: 1.6rem;
+  margin-bottom: 2.4rem;
+  width: 64rem;
+  height: 5.6rem;
+  border: none;
+  border-radius: 1.2rem;
+  background-color: var(--gray100);
+  text-indent: 2.4rem;
+  &::placeholder {
+    color: var(--gray400);
+    font-size: 1.6rem;
+    line-height: 2.6rem;
+    font-weight: 400;
+  }
+}
+.button {
+  width: 64rem;
+  height: 5.6rem;
+  border: none;
+  border-radius: 4rem;
+  margin-bottom: 2.4rem;
+  color: var(--gray100);
+  background-color: var(--primary100);
+  &:hover {
+    cursor: pointer;
+  }
+  &:disabled {
+    background-color: var(--gray400);
+    cursor: not-allowed;
+  }
+}
+@media (max-width: 1199px) {
+  .loginContainer {
+    margin-top: 19rem;
+  }
+}
+
+@media (max-width: 743px) {
+  .loginContainer {
+    margin-top: 8rem;
+  }
+  .logoContainer {
+    width: 19.8rem;
+    height: 6.6rem;
+  }
+  .form {
+    margin-top: 2.4rem;
+  }
+  .input {
+    width: 34.3rem;
+  }
+  .button {
+    width: 34.3rem;
+  }
 }

@@ -4,6 +4,9 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import styles from "@styles/Register.module.css";
 import Link from "next/link";
+import Image from "next/image";
+
+import pandaLogo from "@images/pandaLogo.png";
 
 export default function Register() {
   const router = useRouter();
@@ -64,7 +67,9 @@ export default function Register() {
 
   return (
     <div className={styles.registerContainer}>
-      <div className={styles.logo}>로고</div>
+      <div className={styles.logoContainer}>
+        <Image src={pandaLogo} alt="panda logo" fill />
+      </div>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div>
           <label>이메일</label>

@@ -4,6 +4,9 @@ import { useState } from "react";
 import axios from "axios";
 import styles from "@styles/Login.module.css";
 import Link from "next/link";
+import Image from "next/image";
+
+import pandaLogo from "@images/pandaLogo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -56,9 +59,12 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>이메일</label>
+      <div className={styles.logoContainer}>
+        <Image src={pandaLogo} alt="panda logo" fill />
+      </div>
+      <form className={styles.form} onSubmit={handleLogin}>
+        <div className={styles.inputContainer}>
+          <label className={`${styles.label} text-2lg bold`}>이메일</label>
           <input
             type="email"
             value={email}
@@ -68,8 +74,8 @@ const Login = () => {
           />
           {emailError && <p className={styles.error}>{emailError}</p>}
         </div>
-        <div>
-          <label>비밀번호</label>
+        <div className={styles.inputContainer}>
+          <label className={`${styles.label} text-2lg bold`}>비밀번호</label>
           <input
             type="password"
             value={password}
@@ -82,14 +88,14 @@ const Login = () => {
         <button
           type="submit"
           disabled={!email || !password}
-          className={styles.button}
+          className={`${styles.button} text-xl semibold`}
         >
           로그인
         </button>
       </form>
 
-      <p>
-        판다마켓이 처음이신가요?
+      <p className="text-md medium">
+        판다마켓이 처음이신가요?&nbsp;
         <Link href="/register">회원가입</Link>
       </p>
     </div>
