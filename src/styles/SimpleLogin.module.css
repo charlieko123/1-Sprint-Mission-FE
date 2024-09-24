@@ -1,0 +1,22 @@
+.simpleLoginContainer {
+  width: 64rem;
+  height: 7.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 2.3rem;
+  padding-right: 2.3rem;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: #e6f2ff;
+}
+.logoBox {
+  display: flex;
+  gap: 1.6rem;
+}
+@media (max-width: 743px) {
+  .simpleLoginContainer {
+    width: 34.3rem;
+    height: 7.5rem;
+  }
+}
