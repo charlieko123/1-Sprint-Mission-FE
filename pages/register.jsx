@@ -14,6 +14,11 @@ import eyeSlashBtn from "@images/btn_eye_slash.svg";
 export default function Register() {
   const router = useRouter();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) router.push("/folder");
+  }, [router]);
+
   const [values, setValues] = useState({
     email: "",
     nickname: "",

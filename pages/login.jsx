@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "@styles/Login.module.css";
 import Link from "next/link";
@@ -18,6 +18,11 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) router.push("/folder");
+  }, [router]);
 
   const mutation = useMutation(
     async (loginData) => {
