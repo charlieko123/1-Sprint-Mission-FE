@@ -33,9 +33,8 @@ export default function Register() {
   const mutation = useMutation(
     async (formData) => {
       const response = await axios.post(
-        "https://panda-market-api.vercel.app/api/signUp",
-        formData,
-        { withCredentials: true }
+        "https://panda-market-api.vercel.app/auth/signUp",
+        formData
       );
       return response.data;
     },

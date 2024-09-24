@@ -53,6 +53,18 @@
     cursor: pointer;
   }
 }
+.loginButton {
+  width: 8.8rem;
+  height: 4.2rem;
+  line-height: 4.2rem;
+  border: none;
+  border-radius: 0.8rem;
+  background-color: var(--primary100);
+  color: var(--white);
+  &:hover {
+    cursor: pointer;
+  }
+}
 @media (max-width: 1199px) {
   .navBar {
     padding: 0 2.4rem;

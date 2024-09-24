@@ -11,10 +11,10 @@ const SimpleLogin = () => {
       <h2 className="text-lg medium">간편 로그인하기</h2>
       <div className={styles.logoBox}>
         <Link href="https://www.google.com" passHref>
-          <Image src={googleLogo} width={42} height={42} />
+          <Image src={googleLogo} alt="google" width={42} height={42} />
         </Link>
         <Link href="https://www.kakaocorp.com/page" passHref>
-          <Image src={kakaoLogo} width={42} height={42} />
+          <Image src={kakaoLogo} alt="kakao" width={42} height={42} />
         </Link>
       </div>
     </div>
