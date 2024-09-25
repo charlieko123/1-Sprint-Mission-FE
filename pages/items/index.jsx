@@ -47,7 +47,7 @@ export default function Items() {
           {products.length > 0 ? (
             products.map((product) => (
               <div key={product.id} className={styles.productCard}>
-                <Link href={`/items/${product.id}`}>
+                <Link href={`/items/${product.id}`} className={styles.a}>
                   <Image
                     src={
                       product.images.length > 0
@@ -55,13 +55,17 @@ export default function Items() {
                         : defaultImage
                     }
                     alt={product.name}
-                    width={220}
-                    height={220}
+                    width={218}
+                    height={218}
                     className={styles.productImage}
                   />
-                  <h2>{product.name}</h2>
-                  <p>{product.description}</p>
-                  <p>가격: {product.price}원</p>
+                  <h2 className={`${styles.name} text-xs`}>{product.name}</h2>
+                  <p className={`${styles.description} text-xs`}>
+                    {product.description}
+                  </p>
+                  <p className={`${styles.price} text-xs semibold`}>
+                    가격: {product.price}원
+                  </p>
                 </Link>
               </div>
             ))

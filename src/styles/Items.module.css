@@ -1,7 +1,33 @@
 .itemsContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 30rem;
-  margin-bottom: 16rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.productList {
+  margin-top: 2.4rem;
+  margin-bottom: 3.6rem;
+  width: 120rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+.productCard {
+  width: 22.4rem;
+  border: 3px solid var(--primary100);
+  border-radius: 0.8rem;
+}
+.productImage {
+  border: 1px solid var(--gray200);
+  border-radius: 0.8rem;
+}
+.a {
+  text-decoration: none;
+  color: var(--gray800);
+}
+.name,
+.description {
+  margin-bottom: 0.8rem;
 }
