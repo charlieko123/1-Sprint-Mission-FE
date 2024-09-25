@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/lib/axios";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext({
@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
     const token = localStorage.getItem("token");
     if (token) {
       axios
-        .get("https://panda-market-api.vercel.app/users/me", {
+        .get("/users/me", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {

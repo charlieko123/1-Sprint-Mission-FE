@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import axios from "@/lib/axios";
 import styles from "@styles/Register.module.css";
 import Link from "next/link";
 import Image from "next/image";
@@ -34,10 +34,7 @@ export default function Register() {
 
   const mutation = useMutation(
     async (formData) => {
-      const response = await axios.post(
-        "https://panda-market-api.vercel.app/auth/signUp",
-        formData
-      );
+      const response = await axios.post("/auth/signUp", formData);
       return response.data;
     },
     {
