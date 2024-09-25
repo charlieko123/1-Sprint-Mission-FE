@@ -2,6 +2,9 @@ import axios from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@contexts/AuthProvider";
+import Image from "next/image";
+import KebabDropdown from "@components/KebabDropdown";
+import ConfirmModal from "@components/ConfirmModal";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -31,6 +34,30 @@ const ProductDetail = () => {
     }
   };
 
+  const handleEdit = () => {
+    router.push(`/items/${productId}/edit`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`/products/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      router.push("/items");
+    } catch (error) {
+      alert("상품 삭제 중 문제가 발생했습니다.");
+    }
+  };
+
+  const openDeleteModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     if (router.isReady && productId && user) {
       fetchProduct();
@@ -44,12 +71,31 @@ const ProductDetail = () => {
     <div>
       {product && (
         <>
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            width={400}
+            height={400}
+          />
           <h1>{product.name}</h1>
           <p>가격: {product.price}원</p>
           <p>설명: {product.description}</p>
           <p>작성자: {product.ownerNickname}</p>
+
+          {user?.id === product.ownerId && (
+            <KebabDropdown
+              onEdit={() => router.push(`/items/${productId}/edit`)}
+              onDelete={openDeleteModal}
+            />
+          )}
         </>
       )}
+
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onConfirm={handleDelete}
+        onCancel={closeDeleteModal}
+      />
       <button onClick={() => router.push("/items")}>목록으로 돌아가기</button>
     </div>
   );
