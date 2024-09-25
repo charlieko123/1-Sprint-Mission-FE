@@ -6,6 +6,7 @@ import KebabIcon from "@images/ic_kebab.svg";
 
 const KebabDropdown = ({ onEdit, onDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsOpen((prev) => !prev);
@@ -20,6 +21,24 @@ const KebabDropdown = ({ onEdit, onDelete }) => {
     setIsOpen(false);
     onDelete();
   };
+
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   return (
     <div className={styles.dropdownContainer}>
