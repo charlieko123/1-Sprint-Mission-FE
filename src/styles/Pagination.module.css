@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
 }
-.page-button {
+.pageButton {
   width: 4rem;
   height: 4rem;
   margin: 0 0.4rem;
@@ -11,13 +11,13 @@
   border-radius: 4rem;
   background-color: var(--white);
 }
-.page-button:hover {
+.pageButton:hover {
   cursor: pointer;
 }
-.page-button.on {
+.pageButton.on {
   background-color: var(--primary100);
   color: var(--white);
 }
-.page-button.disabled {
+.pageButton.disabled {
   opacity: 0.5;
 }
