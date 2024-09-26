@@ -1,0 +1,47 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--gray300);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modalContent {
+  background-color: var(--white);
+  padding: 2rem;
+  border-radius: 1.2rem;
+  width: 30rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalMessage {
+  font-size: 1.2rem;
+  margin: 1.5rem 0;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+}
+
+.button {
+  background-color: var(--errorRed);
+  border: none;
+  color: var(--white);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.8rem;
+  &:hover {
+    cursor: pointer;
+    border: 2px solid var(--errorRed);
+    background-color: var(--white);
+    color: var(--errorRed);
+  }
+}

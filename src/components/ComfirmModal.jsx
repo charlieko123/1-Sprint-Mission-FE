@@ -1,7 +1,7 @@
 import styles from "@styles/ConfirmModal.module.css";
 import Image from "next/image";
-import checkIcon from "@images/check_icon.svg";
-import { useRef } from "react";
+import checkIcon from "@images/ic_check.svg";
+import { useRef, useEffect } from "react";
 
 const ConfirmModal = ({ isOpen, onConfirm, onCancel }) => {
   const modalRef = useRef(null);
