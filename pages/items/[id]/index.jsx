@@ -11,6 +11,7 @@ const ProductDetail = () => {
   const { productId } = router.query;
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
 
