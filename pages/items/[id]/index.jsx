@@ -5,6 +5,7 @@ import { AuthContext } from "@contexts/AuthProvider";
 import Image from "next/image";
 import KebabDropdown from "@components/KebabDropdown";
 import ConfirmModal from "@components/ConfirmModal";
+import CommentList from "@components/CommentList";
 
 const ProductDetail = () => {
   const router = useRouter();
@@ -84,11 +85,10 @@ const ProductDetail = () => {
           <p>작성자: {product.ownerNickname}</p>
 
           {user?.id === product.ownerId && (
-            <KebabDropdown
-              onEdit={() => router.push(`/items/${productId}/edit`)}
-              onDelete={openDeleteModal}
-            />
+            <KebabDropdown onEdit={handleEdit} onDelete={openDeleteModal} />
           )}
+
+          <CommentList productId={productId} />
         </>
       )}
 
