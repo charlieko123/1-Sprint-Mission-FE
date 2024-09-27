@@ -7,6 +7,8 @@ import KebabDropdown from "@components/KebabDropdown";
 import ConfirmModal from "@components/ConfirmModal";
 import CommentList from "@components/CommentList";
 
+import defaultImage from "@images/pandaLogo.png";
+
 const ProductDetail = () => {
   const router = useRouter();
   const { productId } = router.query;
@@ -109,7 +111,7 @@ const ProductDetail = () => {
       {product && (
         <>
           <Image
-            src={product.images[0]}
+            src={product.images.length > 0 ? product.images[0] : defaultImage}
             alt={product.name}
             width={400}
             height={400}
