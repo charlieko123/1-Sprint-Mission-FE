@@ -71,6 +71,14 @@ const CommentList = ({ productId }) => {
     <div>
       <h2>문의하기</h2>
       <div>
+        <textarea
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="댓글을 입력해주세요."
+        />
+        <button onClick={handleAddComment}>등록</button>
+      </div>
+      <div>
         {comments.map((comment) => (
           <Comment
             key={comment.id}
@@ -79,15 +87,6 @@ const CommentList = ({ productId }) => {
             onEdit={handleEditComment}
           />
         ))}
-      </div>
-
-      <div>
-        <textarea
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="댓글을 입력해주세요."
-        />
-        <button onClick={handleAddComment}>등록</button>
       </div>
     </div>
   );
