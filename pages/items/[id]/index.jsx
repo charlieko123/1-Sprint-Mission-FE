@@ -10,7 +10,7 @@ import {
   addFavorite,
   removeFavorite,
   deleteProduct,
-} from "@/api/productApi";
+} from "@api/productApi";
 
 import defaultImage from "@images/pandaLogo.png";
 

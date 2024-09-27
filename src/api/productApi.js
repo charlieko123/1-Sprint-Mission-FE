@@ -8,6 +8,14 @@ export const fetchProductDetail = async (productId, token) => {
   return response.data;
 };
 
+// 상품 수정
+export const updateProduct = async (productId, productData, token) => {
+  const response = await axios.put(`/products/${productId}`, productData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 // 상품 좋아요
 export const addFavorite = async (productId, token) => {
   await axios.post(`/products/${productId}/favorite`, null, {

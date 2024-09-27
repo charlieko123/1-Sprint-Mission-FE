@@ -1,7 +1,7 @@
 import { AuthContext } from "@/src/contexts/AuthProvider";
 import { useRouter } from "next/router";
 import { useContext, useState } from "react";
-import axios from "@/lib/axios";
+import { fetchProductDetail, updateProduct } from "@api/productApi";
 
 const EditProduct = () => {
   const router = useRouter();
@@ -19,9 +19,7 @@ const EditProduct = () => {
   const fetchProduct = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`/products/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await fetchProductDetail(productId, token);
 
       if (user?.id !== response.data.ownerId) {
         alert("권한이 없습니다.");
@@ -53,10 +51,9 @@ const EditProduct = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`/products/${productId}`, product, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await updateProduct(productId, product, token);
       alert("상품 수정이 완료되었습니다.");
+
       router.push(`/items/${productId}`);
     } catch (error) {
       alert("상품 수정 중 문제가 발생했습니다.");
