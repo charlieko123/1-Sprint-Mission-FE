@@ -1,4 +1,3 @@
-import axios from "@/lib/axios";
 import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "@contexts/AuthProvider";
@@ -6,6 +5,12 @@ import Image from "next/image";
 import KebabDropdown from "@components/KebabDropdown";
 import ConfirmModal from "@components/ConfirmModal";
 import CommentList from "@components/CommentList";
+import {
+  fetchProductDetail,
+  addFavorite,
+  removeFavorite,
+  deleteProduct,
+} from "@/api/productApi";
 
 import defaultImage from "@images/pandaLogo.png";
 
@@ -30,14 +35,10 @@ const ProductDetail = () => {
       }
 
       if (isFavorite) {
-        await axios.delete(`/products/${productId}/favorite`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await removeFavorite(productId, token);
         setFavoriteCount(favoriteCount - 1);
       } else {
-        await axios.post(`/products/${productId}/favorite`, null, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await addFavorite(productId, token);
         setFavoriteCount(favoriteCount + 1);
       }
       setIsFavorite(!isFavorite);
@@ -57,15 +58,11 @@ const ProductDetail = () => {
         return router.push("/login");
       }
 
-      const response = await axios.get(`/products/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const productData = await fetchProductDetail(productId, token);
 
-      setProduct(response.data);
-      setIsFavorite(response.data.isFavorite);
-      setFavoriteCount(response.data.favoriteCount);
+      setProduct(productData);
+      setIsFavorite(productData.isFavorite);
+      setFavoriteCount(productData.favoriteCount);
     } catch (error) {
       setError("상품 정보를 불러오는 중 문제가 발생했습니다.");
     } finally {
@@ -80,9 +77,7 @@ const ProductDetail = () => {
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`/products/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await deleteProduct(productId, token);
       router.push("/items");
     } catch (error) {
       alert("상품 삭제 중 문제가 발생했습니다.");
@@ -115,6 +110,7 @@ const ProductDetail = () => {
             alt={product.name}
             width={400}
             height={400}
+            priority
           />
           <h1>{product.name}</h1>
           <p>가격: {product.price}원</p>
