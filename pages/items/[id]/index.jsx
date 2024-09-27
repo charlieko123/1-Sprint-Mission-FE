@@ -21,6 +21,12 @@ const ProductDetail = () => {
   const toggleFavorite = async () => {
     try {
       const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return router.push("/login");
+      }
+
       if (isFavorite) {
         await axios.delete(`/products/${productId}/favorite`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -43,6 +49,11 @@ const ProductDetail = () => {
 
     try {
       const token = localStorage.getItem("token");
+
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        return router.push("/login");
+      }
 
       const response = await axios.get(`/products/${productId}`, {
         headers: {
