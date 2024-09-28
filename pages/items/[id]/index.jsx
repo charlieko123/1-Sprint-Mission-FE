@@ -11,77 +11,79 @@ import {
   removeFavorite,
   deleteProduct,
 } from "@api/productApi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import defaultImage from "@images/pandaLogo.png";
 
 const ProductDetail = () => {
   const router = useRouter();
   const { productId } = router.query;
-  const [product, setProduct] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [favoriteCount, setFavoriteCount] = useState(0);
 
-  const toggleFavorite = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  const queryClient = useQueryClient();
 
-      if (!token) {
-        alert("로그인이 필요합니다.");
-        return router.push("/login");
-      }
+  if (!router.isReady) {
+    return <p>로딩중...</p>;
+  }
 
-      if (isFavorite) {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    router.push("/login");
+    return null;
+  }
+
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useQuery(
+    ["product", productId],
+    () => fetchProductDetail(productId, token),
+    {
+      enabled: !!productId && !!user,
+      staleTime: 1000 * 60 * 5,
+    }
+  );
+
+  const toggleFavoriteMutation = useMutation(
+    async () => {
+      if (product.isFavorite) {
         await removeFavorite(productId, token);
-        setFavoriteCount(favoriteCount - 1);
       } else {
         await addFavorite(productId, token);
-        setFavoriteCount(favoriteCount + 1);
       }
-      setIsFavorite(!isFavorite);
-    } catch (error) {
-      console.error("좋아요 업데이트 중 문제가 발생했습니다.", error);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["product", productId]); // 성공하면 캐시 무효화
+      },
     }
+  );
+
+  const deleteProductMutation = useMutation(
+    async () => {
+      return deleteProduct(productId, token);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("products"); // 성공 시 상품 목록을 다시 불러옴
+        router.push("/items");
+      },
+    }
+  );
+
+  const toggleFavorite = () => {
+    toggleFavoriteMutation.mutate();
   };
 
-  const fetchProduct = async () => {
-    if (!productId) return;
-
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        alert("로그인이 필요합니다.");
-        return router.push("/login");
-      }
-
-      const productData = await fetchProductDetail(productId, token);
-
-      setProduct(productData);
-      setIsFavorite(productData.isFavorite);
-      setFavoriteCount(productData.favoriteCount);
-    } catch (error) {
-      setError("상품 정보를 불러오는 중 문제가 발생했습니다.");
-    } finally {
-      setIsLoading(false);
-    }
+  const handleDelete = () => {
+    deleteProductMutation.mutate();
   };
 
   const handleEdit = () => {
     router.push(`/items/${productId}/edit`);
-  };
-
-  const handleDelete = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      await deleteProduct(productId, token);
-      router.push("/items");
-    } catch (error) {
-      alert("상품 삭제 중 문제가 발생했습니다.");
-    }
   };
 
   const openDeleteModal = () => {
@@ -92,21 +94,16 @@ const ProductDetail = () => {
     setIsModalOpen(false);
   };
 
-  useEffect(() => {
-    if (router.isReady && productId && user) {
-      fetchProduct();
-    }
-  }, [router.isReady, productId]);
-
   if (isLoading) return <p>로딩중...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p>{error.message}</p>;
 
   return (
     <div>
       {product && (
         <>
           <Image
-            src={product.images.length > 0 ? product.images[0] : defaultImage}
+            // src={product.images.length > 0 ? product.images[0] : defaultImage}
+            src={defaultImage}
             alt={product.name}
             width={400}
             height={400}
