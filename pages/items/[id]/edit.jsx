@@ -1,7 +1,8 @@
 import { AuthContext } from "@/src/contexts/AuthProvider";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { fetchProductDetail, updateProduct } from "@api/productApi";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const EditProduct = () => {
   const router = useRouter();
@@ -12,32 +13,64 @@ const EditProduct = () => {
     price: 0,
     tags: [],
   });
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
-  const fetchProduct = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetchProductDetail(productId, token);
+  if (!router.isReady) {
+    return <p>로딩중...</p>;
+  }
 
-      if (user?.id !== response.data.ownerId) {
-        alert("권한이 없습니다.");
-        return router.push(`/items/${productId}`);
-      }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    router.push("/login");
+    return null;
+  }
 
-      setProduct({
-        name: response.data.name,
-        description: response.data.description,
-        price: response.data.price,
-        tags: response.data.tags,
-      });
-    } catch (error) {
-      setError("상품 정보를 불러오는 중 문제가 발생했습니다.");
-    } finally {
-      setIsLoading(false);
+  const {
+    data: productData,
+    isLoading,
+    error,
+  } = useQuery(
+    ["product", productId],
+    () => fetchProductDetail(productId, token),
+    {
+      enabled: !!productId && !!user,
+      staleTime: 1000 * 60 * 5,
     }
-  };
+  );
+
+  useEffect(() => {
+    if (productData) {
+      if (user?.id !== productData.ownerId) {
+        alert("권한이 없습니다.");
+        router.push(`/items/${productId}`);
+      } else {
+        setProduct({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          tags: productData.tags,
+        });
+      }
+    }
+  }, [productData, user, productId, router, token]);
+
+  const updateMutation = useMutation(
+    async (updatedProduct) => {
+      return updateProduct(productId, updatedProduct, token);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["product", productId]);
+        alert("상품 수정이 완료되었습니다.");
+        router.push(`/items/${productId}`);
+      },
+      onError: () => {
+        alert("상품 수정 중 문제가 발생했습니다.");
+      },
+    }
+  );
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -49,25 +82,11 @@ const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      await updateProduct(productId, product, token);
-      alert("상품 수정이 완료되었습니다.");
-
-      router.push(`/items/${productId}`);
-    } catch (error) {
-      alert("상품 수정 중 문제가 발생했습니다.");
-    }
+    updateMutation.mutate(product);
   };
 
-  useEffect(() => {
-    if (router.isReady && productId && user) {
-      fetchProduct();
-    }
-  }, [router.isReady, productId]);
-
   if (isLoading) return <p>로딩중...</p>;
-  if (error) return <p>{error}</p>;
+  if (error) return <p>{error.message}</p>;
 
   return (
     <div>
@@ -116,7 +135,9 @@ const EditProduct = () => {
             }
           />
         </div>
-        <button type="submit">저장하기</button>
+        <button type="submit" disabled={updateMutation.isLoading}>
+          저장하기
+        </button>
         <button
           type="button"
           onClick={() => router.push(`/items/${productId}`)}
