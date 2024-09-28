@@ -1,5 +1,13 @@
 import axios from "@/lib/axios";
 
+// 상품 목록 가져오기
+export const fetchProducts = async (page, pageSize) => {
+  const response = await axios.get(`/products`, {
+    params: { page, pageSize },
+  });
+  return response.data;
+};
+
 // 상품 상세 조회
 export const fetchProductDetail = async (productId, token) => {
   const response = await axios.get(`/products/${productId}`, {

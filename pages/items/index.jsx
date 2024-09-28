@@ -1,38 +1,29 @@
 import styles from "@styles/Items.module.css";
-import { useState, useEffect } from "react";
-import axios from "@/lib/axios";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Pagination from "@components/Pagination";
+import { fetchProducts } from "@api/productApi";
+import { useQuery } from "@tanstack/react-query";
 
 import defaultImage from "@images/panda_image.png";
 
 export default function Items() {
-  const [products, setProducts] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(10);
-  const [isLoading, setIsLoading] = useState(true);
+  const pageSize = 10;
 
-  const fetchProducts = async (page = 1) => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`/products`, {
-        params: { page, pageSize },
-      });
-      setProducts(response.data.list);
-      setTotalCount(response.data.totalCount);
-    } catch (error) {
-      console.error("products fetching Error:", error);
-      throw error;
-    } finally {
-      setIsLoading(false);
+  const { data, isLoading, isError } = useQuery(
+    ["products", currentPage],
+    () => fetchProducts(currentPage, pageSize),
+    {
+      keepPreviousData: true,
+      staleTime: 1000 * 60 * 5,
+      cacheTime: 1000 * 60 * 10,
     }
-  };
+  );
 
-  useEffect(() => {
-    fetchProducts(currentPage);
-  }, [currentPage]);
+  const products = data?.list || [];
+  const totalCount = data?.totalCount || 0;
 
   const totalPage = Math.ceil(totalCount / pageSize);
 
@@ -42,6 +33,8 @@ export default function Items() {
 
       {isLoading ? (
         <p>로딩중...</p>
+      ) : isError ? (
+        <p>상품 정보를 불러오는 중 문제가 발생했습니다.</p>
       ) : (
         <div className={styles.productList}>
           {products.length > 0 ? (
