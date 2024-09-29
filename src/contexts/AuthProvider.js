@@ -39,7 +39,7 @@ export function AuthProvider({ children }) {
           console.log(response.data);
           setUser(response.data);
         })
-        .catch(() => {
+        .catch((error) => {
           console.error("Error fetching user data:", error);
           logout();
         });
