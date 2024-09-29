@@ -16,13 +16,14 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1rem;
 }
 .passwordWrapper {
   position: relative;
 }
 .input {
   margin-top: 1.6rem;
-  margin-bottom: 2.4rem;
+  margin-bottom: 1.2rem;
   width: 64rem;
   height: 5.6rem;
   border: none;
@@ -35,6 +36,18 @@
     line-height: 2.6rem;
     font-weight: 400;
   }
+  &:focus {
+    border: 1px solid var(--primary100);
+  }
+}
+.inputError {
+  border: 1px solid var(--errorRed);
+}
+.error {
+  color: var(--errorRed);
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding-left: 1.6rem;
 }
 .eyeButton {
   position: absolute;

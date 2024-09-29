@@ -12,6 +12,8 @@ import pandaLogo from "@images/pandaLogo.png";
 import eyeBtn from "@images/btn_eye.svg";
 import eyeSlashBtn from "@images/btn_eye_slash.svg";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,24 +47,39 @@ const Login = () => {
     }
   );
 
+  const validateEmail = () => {
+    if (!email) {
+      setEmailError("이메일을 확인해 주세요.");
+      return false;
+    } else if (!EMAIL_REGEX.test(email)) {
+      setEmailError("잘못된 이메일입니다.");
+      return false;
+    } else {
+      setEmailError("");
+      return true;
+    }
+  };
+
+  const validatePassword = () => {
+    if (!password) {
+      setPasswordError("비밀번호를 확인해 주세요.");
+      return false;
+    } else if (password.length < 8) {
+      setPasswordError("비밀번호를 8자 이상 입력해 주세요.");
+      return false;
+    } else {
+      setPasswordError("");
+      return true;
+    }
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
 
-    let valid = true;
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
 
-    setEmailError("");
-    setPasswordError("");
-
-    if (!email) {
-      setEmailError("이메일을 확인해 주세요.");
-      valid = false;
-    }
-    if (!password) {
-      setPasswordError("비밀번호를 확인해 주세요.");
-      valid = false;
-    }
-
-    if (valid) {
+    if (isEmailValid && isPasswordValid) {
       mutation.mutate({ email, password });
     }
   };
@@ -85,8 +102,9 @@ const Login = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onBlur={validateEmail}
             placeholder="이메일을 입력해주세요"
-            className={styles.input}
+            className={`${styles.input} ${emailError ? styles.inputError : ""}`}
           />
           {emailError && <p className={styles.error}>{emailError}</p>}
         </div>
@@ -97,8 +115,11 @@ const Login = () => {
               type={passwordVisible ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={validatePassword}
               placeholder="비밀번호를 입력해주세요"
-              className={styles.input}
+              className={`${styles.input} ${
+                passwordError ? styles.inputError : ""
+              } `}
             />
             <div onClick={togglePasswordVisible} className={styles.eyeButton}>
               <Image
