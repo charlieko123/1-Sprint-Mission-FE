@@ -17,7 +17,7 @@ import defaultImage from "@images/pandaLogo.png";
 
 const ProductDetail = () => {
   const router = useRouter();
-  const { productId } = router.query;
+  const { id: productId } = router.query;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(AuthContext);
 
