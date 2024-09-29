@@ -102,8 +102,7 @@ const ProductDetail = () => {
       {product && (
         <>
           <Image
-            // src={product.images.length > 0 ? product.images[0] : defaultImage}
-            src={defaultImage}
+            src={product.images.length > 0 ? product.images[0] : defaultImage}
             alt={product.name}
             width={400}
             height={400}
@@ -115,8 +114,8 @@ const ProductDetail = () => {
           <p>작성자: {product.ownerNickname}</p>
 
           <button onClick={toggleFavorite}>
-            {isFavorite ? "❤️" : "♡"}&nbsp;
-            {favoriteCount}
+            {product.isFavorite ? "❤️" : "♡"}&nbsp;
+            {product.favoriteCount}
           </button>
 
           {user?.id === product.ownerId && (
