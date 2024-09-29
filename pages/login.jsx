@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import SimpleLogin from "@components/SimpleLogin";
 import { AuthContext } from "@contexts/AuthProvider";
+import Modal from "@components/Modal";
 
 import pandaLogo from "@images/pandaLogo.png";
 import eyeBtn from "@images/btn_eye.svg";
@@ -20,6 +21,8 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const router = useRouter();
   const { login } = useContext(AuthContext);
 
@@ -42,7 +45,8 @@ const Login = () => {
         router.push("/items");
       },
       onError: (error) => {
-        alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.");
+        setModalMessage("비밀번호가 일치하지 않습니다.");
+        setIsModalOpen(true);
       },
     }
   );
@@ -86,6 +90,10 @@ const Login = () => {
 
   const togglePasswordVisible = () => {
     setPasswordVisible((prevPasswordVisible) => !prevPasswordVisible);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -147,6 +155,7 @@ const Login = () => {
         판다마켓이 처음이신가요?&nbsp;
         <Link href="/register">회원가입</Link>
       </p>
+      {isModalOpen && <Modal message={modalMessage} onClose={closeModal} />}
     </div>
   );
 };
