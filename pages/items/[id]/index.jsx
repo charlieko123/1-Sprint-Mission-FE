@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { AuthContext } from "@contexts/AuthProvider";
 import Image from "next/image";
 import KebabDropdown from "@components/KebabDropdown";
@@ -12,6 +12,7 @@ import {
   deleteProduct,
 } from "@api/productApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import styles from "@styles/ProductDetail.module.css";
 
 import defaultImage from "@images/pandaLogo.png";
 
@@ -98,31 +99,39 @@ const ProductDetail = () => {
   if (error) return <p>{error.message}</p>;
 
   return (
-    <div>
+    <div className={styles.productDetailContainer}>
       {product && (
         <>
           <Image
+            className={styles.productImage}
             src={product.images.length > 0 ? product.images[0] : defaultImage}
             alt={product.name}
             width={400}
             height={400}
             priority
           />
-          <h1>{product.name}</h1>
-          <p>가격: {product.price}원</p>
-          <p>설명: {product.description}</p>
-          <p>작성자: {product.ownerNickname}</p>
+          <div className={styles.productInfo}>
+            <h1 className={styles.productName}>{product.name}</h1>
+            <p className={styles.productPrice}>가격: {product.price}원</p>
+            <p className={styles.productDescription}>{product.description}</p>
+            <p className={styles.productOwner}>
+              작성자: {product.ownerNickname}
+            </p>
 
-          <button onClick={toggleFavorite}>
-            {product.isFavorite ? "❤️" : "♡"}&nbsp;
-            {product.favoriteCount}
-          </button>
+            <button className={styles.favoriteButton} onClick={toggleFavorite}>
+              {product.isFavorite ? "❤️" : "♡"}&nbsp;
+              {product.favoriteCount}
+            </button>
 
-          {user?.id === product.ownerId && (
-            <KebabDropdown onEdit={handleEdit} onDelete={openDeleteModal} />
-          )}
-
-          <CommentList productId={productId} />
+            {user?.id === product.ownerId && (
+              <div className={styles.kebabDropdown}>
+                <KebabDropdown onEdit={handleEdit} onDelete={openDeleteModal} />
+              </div>
+            )}
+          </div>
+          <div className={styles.commentsSection}>
+            <CommentList productId={productId} />
+          </div>
         </>
       )}
 
@@ -130,8 +139,14 @@ const ProductDetail = () => {
         isOpen={isModalOpen}
         onConfirm={handleDelete}
         onCancel={closeDeleteModal}
+        className={styles.confirmModal}
       />
-      <button onClick={() => router.push("/items")}>목록으로 돌아가기</button>
+      <button
+        className={styles.backButton}
+        onClick={() => router.push("/items")}
+      >
+        목록으로 돌아가기
+      </button>
     </div>
   );
 };
