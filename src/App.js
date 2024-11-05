@@ -1,61 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Navigation from "./components/Navigation";
-import SaleProducts from "./components/SaleProducts";
-import Registration from "./components/Registration";
-import ProductDetail from "./components/ProductDetail";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import "./App.css";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const jsx_runtime_1 = require("react/jsx-runtime");
+require("./App.css");
 function App() {
-  const [activePath, setActivePath] = useState("");
-
-  return (
-    <BrowserRouter>
-      <div className="main-header">
-        <Navigation activePath={activePath} setActivePath={setActivePath} />
-      </div>
-      <Routes>
-        <Route index element={<NavigateToItems />} />
-        <Route
-          path="/items"
-          element={
-            <div className="main-body">
-              <SaleProducts
-                activePath={activePath}
-                setActivePath={setActivePath}
-              />
-            </div>
-          }
-        />
-        <Route
-          path="/registration"
-          element={
-            <div className="main-body">
-              <Registration />
-            </div>
-          }
-        />
-        <Route
-          path="/items/detail"
-          element={
-            <div className="main-body">
-              <ProductDetail />
-            </div>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
-  );
+    return ((0, jsx_runtime_1.jsx)("div", Object.assign({ className: "App" }, { children: (0, jsx_runtime_1.jsxs)("header", Object.assign({ className: "App-header" }, { children: [(0, jsx_runtime_1.jsxs)("p", { children: ["Edit ", (0, jsx_runtime_1.jsx)("code", { children: "src/App.tsx" }), " and save to reload."] }), (0, jsx_runtime_1.jsx)("a", Object.assign({ className: "App-link", href: "https://reactjs.org", target: "_blank", rel: "noopener noreferrer" }, { children: "Learn React" }))] })) })));
 }
-
-function NavigateToItems() {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate("/items");
-  }, [navigate]);
-
-  return;
-}
-
-export default App;
+exports.default = App;
